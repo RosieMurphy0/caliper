@@ -188,4 +188,50 @@ describe('An Identity Manager', () => {
         const identityManager = await identityManagerFactory.create(stubWalletFacadeFactory, [org1MSP, org2MSP]);
         await identityManager.getWallet().should.equal('IamAwallet');
     });
+
+    describe ('when extracting identities from a fabric node sdk 1.4 credential store and store in the in memory wallet', () => {
+        it('store the path and the cryptostore path in the memory wallet', async () => {
+            const stubWalletFacadeFactory = sinon.createStubInstance(IWalletFacadeFactory);
+            const stubWalletFacade = sinon.createStubInstance(IWalletFacade);
+            stubWalletFacadeFactory.create.resolves(stubWalletFacade);
+            const identityManagerFactory = new IdentityManagerFactory();
+            const identityManager = await identityManagerFactory.create(stubWalletFacadeFactory, [org1MSP, org2MSP]);
+            // should i fake run the parse org from the identity manager? no maybe initalise tho?
+            // should create memory wallet beforehand? it starts as null
+            const credentialStore = {
+                path: 'path/to/somewhere',
+                cryptostore: {
+                    path: 'path/to/somewhere/else'
+                },
+            };
+            // await identityManager._extractIdentitiesFromCredentialStore(credentialStore);
+            // should be fake?
+            // need to check it calls export, calls it once, calls it with mspid + credential store.path + credentialstore.cyrptostore.path
+            identityManager._extractIdentitiesFromCredentialStore(credentialStore);
+        });
+        // presuming different tests for v1 v2 very unsure how to write, just focusing on v1 now and hopefully? shouldn't be that different when writing test?
+        // v1 might need admin name for credentialstore
+        //
+        // tests to add properly
+        // credential store optional, might not exist need test for that but should throw error if they are calling function
+        // defined in connection profile as well/optionally? probably shouldn't matter in this case
+    });
+
+    describe ('blah', () => {
+        it('should', async () => {
+            const stubWalletFacadeFactory = sinon.createStubInstance(IWalletFacadeFactory);
+            const stubWalletFacade = sinon.createStubInstance(IWalletFacade);
+            stubWalletFacadeFactory.create.resolves(stubWalletFacade);
+            const identityManagerFactory = new IdentityManagerFactory();
+            const identityManager = await identityManagerFactory.create(stubWalletFacadeFactory, [org1MSP, org2MSP]);
+            const wallet = {
+                path: 'some/path/to/org-specific-wallet'
+            };
+            // should be await and checking what
+            // needs to check it calls export, once, mspid + wallet.path
+            // need to check correct mspid? don't think i can here
+            identityManager._extractIdentitiesFromWallet(wallet);
+        });
+
+    });
 });

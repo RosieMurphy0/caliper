@@ -149,7 +149,13 @@ class IdentityManager {
      * @param {*} credentialStore the credential store information
      */
     _extractIdentitiesFromCredentialStore(credentialStore) {
-        // TODO: To be implemented
+        //v1 needs admin name? maybe
+        const credentialStorePath = credentialStore.path;
+        const credentialStoreCryptoStore = credentialStore.cryptoStore.path;
+        // mspid ?
+        const alias = this.getWalletAliasFromOrganizationAndIdentityName(this.organization.mspid, credentialStore);
+        // needs to be added
+        this.inMemoryWalletFacade.import(alias, credentialStorePath, credentialStoreCryptoStore);
     }
 
     /**
@@ -157,7 +163,11 @@ class IdentityManager {
      * @param {*} wallet the wallet information
      */
     _extractIdentitiesFromWallet(wallet) {
-        // TODO: To be implemented
+        //should work same as above?
+        const walletPath = wallet.path;
+        const alias = this.getWalletAliasFromOrganizationAndIdentityName(this.organization.mspid, wallet);
+        // not working
+        this.inMemoryWalletFacade.import(alias, walletPath);
     }
 
     /**
